@@ -1,8 +1,9 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { BoltIcon } from "../components/Icons"
 import { Doughnut } from "react-chartjs-2"
+import { useAlert } from "../contexts/AlertContext"
 import {
   Chart as ChartJS,
   ArcElement,
@@ -21,6 +22,7 @@ ChartJS.register(
 )
 
 const Purchases = () => {
+  const { showAlert } = useAlert()
   const [filterStatus, setFilterStatus] = useState("all")
   const [searchQuery, setSearchQuery] = useState("")
   const [sortBy, setSortBy] = useState("date")
@@ -99,6 +101,49 @@ const Purchases = () => {
     }
   ]
 
+  // Simulate system alerts
+  useEffect(() => {
+    // Simulate load increase alert
+    const loadTimer = setInterval(() => {
+      const randomLoad = Math.floor(Math.random() * 30) + 70 // Random load between 70-100%
+      if (randomLoad > 90) {
+        showAlert(`High Load Alert: System load at ${randomLoad}%`, "warning")
+      }
+    }, 2000) // Check every 3 seconds
+
+    // Simulate energy sharing status
+    const sharingTimer = setInterval(() => {
+      const isSharing = Math.random() > 0.7
+      if (!isSharing) {
+        showAlert("Energy Sharing Interrupted: Network connectivity issues", "error")
+      }
+    }, 60000) // Check every minute
+
+    // Simulate power meter status
+    const meterTimer = setInterval(() => {
+      const meterStatus = Math.random() > 0.8
+      if (!meterStatus) {
+        showAlert("Power Meter Alert: Communication lost with smart meter", "error")
+      }
+    }, 50000) // Check every 50 seconds
+
+    // Simulate communication status
+    const commTimer = setInterval(() => {
+      const commStatus = Math.random() > 0.85
+      if (!commStatus) {
+        showAlert("Communication Error: Unable to establish connection with grid", "warning")
+      }
+    }, 40000) // Check every 40 seconds
+
+    // Cleanup intervals on component unmount
+    return () => {
+      clearInterval(loadTimer)
+      clearInterval(sharingTimer)
+      clearInterval(meterTimer)
+      clearInterval(commTimer)
+    }
+  }, [showAlert])
+
   const handlePurchaseFormChange = (e) => {
     const { name, value, type, checked } = e.target
     setPurchaseForm(prev => ({
@@ -112,6 +157,12 @@ const Purchases = () => {
     setIsSubmitting(true)
 
     try {
+      // Validate form
+      if (!purchaseForm.units || !purchaseForm.startDate || !purchaseForm.startTime) {
+        showAlert("Please fill in all required fields", "error")
+        return
+      }
+
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1500))
       
@@ -138,10 +189,37 @@ const Purchases = () => {
         isRecurring: false,
         recurringFrequency: "daily"
       })
+
+      showAlert("Purchase created successfully!", "success")
+
+      // Show recurring purchase confirmation if enabled
+      if (purchaseForm.isRecurring) {
+        showAlert(`Recurring purchase scheduled ${purchaseForm.recurringFrequency}`, "info")
+      }
     } catch (error) {
       console.error("Error creating purchase:", error)
+      showAlert("Failed to create purchase. Please try again.", "error")
     } finally {
       setIsSubmitting(false)
+    }
+  }
+
+  const handleQuickAction = (action) => {
+    switch (action) {
+      case "Schedule →":
+        showAlert("Scheduling feature will be available soon!", "info")
+        break
+      case "Download →":
+        showAlert("Preparing your report for download...", "info")
+        setTimeout(() => {
+          showAlert("Report downloaded successfully!", "success")
+        }, 2000)
+        break
+      case "Manage →":
+        showAlert("Payment methods management coming soon!", "info")
+        break
+      default:
+        break
     }
   }
 
@@ -313,6 +391,7 @@ const Purchases = () => {
           ].map((action, index) => (
             <div
               key={index}
+              onClick={() => handleQuickAction(action.action)}
               className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer group"
             >
               <h4 className="font-medium text-gray-900 group-hover:text-green-600 transition-colors duration-200">
