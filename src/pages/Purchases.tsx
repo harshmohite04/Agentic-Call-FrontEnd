@@ -25,6 +25,18 @@ const Purchases = () => {
   const [searchQuery, setSearchQuery] = useState("")
   const [sortBy, setSortBy] = useState("date")
   const [dateRange, setDateRange] = useState("month")
+  const [isNewPurchaseModalOpen, setIsNewPurchaseModalOpen] = useState(false)
+  const [purchaseForm, setPurchaseForm] = useState({
+    type: "peak",
+    units: "",
+    startDate: "",
+    startTime: "",
+    duration: "1",
+    paymentMethod: "wallet",
+    isRecurring: false,
+    recurringFrequency: "daily"
+  })
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   // Sample data - replace with actual data from your API
   const purchaseStats = {
@@ -87,6 +99,52 @@ const Purchases = () => {
     }
   ]
 
+  const handlePurchaseFormChange = (e) => {
+    const { name, value, type, checked } = e.target
+    setPurchaseForm(prev => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value
+    }))
+  }
+
+  const handlePurchaseSubmit = async (e) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1500))
+      
+      // Add new transaction to the list
+      const newTransaction = {
+        id: `TRX${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`,
+        date: new Date().toISOString().split('T')[0],
+        amount: `₹${(parseFloat(purchaseForm.units) * 10).toFixed(2)}`,
+        type: purchaseForm.type === "peak" ? "Peak Hours" : 
+              purchaseForm.type === "offpeak" ? "Off-Peak Hours" : "Renewable Energy",
+        status: "pending",
+        units: `${purchaseForm.units} kWh`
+      }
+
+      transactions.unshift(newTransaction)
+      setIsNewPurchaseModalOpen(false)
+      setPurchaseForm({
+        type: "peak",
+        units: "",
+        startDate: "",
+        startTime: "",
+        duration: "1",
+        paymentMethod: "wallet",
+        isRecurring: false,
+        recurringFrequency: "daily"
+      })
+    } catch (error) {
+      console.error("Error creating purchase:", error)
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
   const filteredTransactions = transactions.filter(tx => {
     if (filterStatus !== "all" && tx.status !== filterStatus) return false
     if (searchQuery && !tx.id.toLowerCase().includes(searchQuery.toLowerCase())) return false
@@ -106,6 +164,13 @@ const Purchases = () => {
     }
   }
 
+  const calculateEstimatedCost = () => {
+    const baseRate = purchaseForm.type === "peak" ? 10 : 
+                    purchaseForm.type === "offpeak" ? 8 : 12
+    const units = parseFloat(purchaseForm.units) || 0
+    return (baseRate * units).toFixed(2)
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-7xl mx-auto space-y-6">
@@ -115,7 +180,10 @@ const Purchases = () => {
             <h1 className="text-2xl font-bold text-gray-900">Purchases</h1>
             <p className="text-gray-500">Track and manage your energy purchases</p>
           </div>
-          <button className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-200">
+          <button 
+            onClick={() => setIsNewPurchaseModalOpen(true)}
+            className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-200"
+          >
             New Purchase
           </button>
         </div>
@@ -257,6 +325,169 @@ const Purchases = () => {
             </div>
           ))}
         </div>
+
+        {/* New Purchase Modal */}
+        {isNewPurchaseModalOpen && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+            <div className="bg-white rounded-xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
+              <div className="p-6 space-y-6">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-xl font-bold text-gray-900">New Energy Purchase</h2>
+                  <button
+                    onClick={() => setIsNewPurchaseModalOpen(false)}
+                    className="text-gray-400 hover:text-gray-500"
+                  >
+                    ✕
+                  </button>
+                </div>
+
+                <form onSubmit={handlePurchaseSubmit} className="space-y-6">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Energy Type
+                    </label>
+                    <select
+                      name="type"
+                      value={purchaseForm.type}
+                      onChange={handlePurchaseFormChange}
+                      className="w-full rounded-lg border border-gray-200 px-4 py-2 focus:ring-2 focus:ring-green-500"
+                    >
+                      <option value="peak">Peak Hours</option>
+                      <option value="offpeak">Off-Peak Hours</option>
+                      <option value="renewable">Renewable Energy</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Units (kWh)
+                    </label>
+                    <input
+                      type="number"
+                      name="units"
+                      value={purchaseForm.units}
+                      onChange={handlePurchaseFormChange}
+                      placeholder="Enter units"
+                      className="w-full rounded-lg border border-gray-200 px-4 py-2 focus:ring-2 focus:ring-green-500"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Start Date
+                      </label>
+                      <input
+                        type="date"
+                        name="startDate"
+                        value={purchaseForm.startDate}
+                        onChange={handlePurchaseFormChange}
+                        className="w-full rounded-lg border border-gray-200 px-4 py-2 focus:ring-2 focus:ring-green-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Start Time
+                      </label>
+                      <input
+                        type="time"
+                        name="startTime"
+                        value={purchaseForm.startTime}
+                        onChange={handlePurchaseFormChange}
+                        className="w-full rounded-lg border border-gray-200 px-4 py-2 focus:ring-2 focus:ring-green-500"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Duration (hours)
+                    </label>
+                    <select
+                      name="duration"
+                      value={purchaseForm.duration}
+                      onChange={handlePurchaseFormChange}
+                      className="w-full rounded-lg border border-gray-200 px-4 py-2 focus:ring-2 focus:ring-green-500"
+                    >
+                      {[1, 2, 4, 8, 12, 24].map(hours => (
+                        <option key={hours} value={hours}>{hours} hour{hours > 1 ? 's' : ''}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Payment Method
+                    </label>
+                    <select
+                      name="paymentMethod"
+                      value={purchaseForm.paymentMethod}
+                      onChange={handlePurchaseFormChange}
+                      className="w-full rounded-lg border border-gray-200 px-4 py-2 focus:ring-2 focus:ring-green-500"
+                    >
+                      <option value="wallet">Wallet Balance</option>
+                      <option value="card">Credit/Debit Card</option>
+                      <option value="upi">UPI</option>
+                    </select>
+                  </div>
+
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      name="isRecurring"
+                      checked={purchaseForm.isRecurring}
+                      onChange={handlePurchaseFormChange}
+                      className="rounded border-gray-300 text-green-600 focus:ring-green-500"
+                    />
+                    <label className="text-sm text-gray-700">Make this a recurring purchase</label>
+                  </div>
+
+                  {purchaseForm.isRecurring && (
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Recurring Frequency
+                      </label>
+                      <select
+                        name="recurringFrequency"
+                        value={purchaseForm.recurringFrequency}
+                        onChange={handlePurchaseFormChange}
+                        className="w-full rounded-lg border border-gray-200 px-4 py-2 focus:ring-2 focus:ring-green-500"
+                      >
+                        <option value="daily">Daily</option>
+                        <option value="weekly">Weekly</option>
+                        <option value="monthly">Monthly</option>
+                      </select>
+                    </div>
+                  )}
+
+                  <div className="bg-gray-50 p-4 rounded-lg">
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-gray-600">Estimated Cost:</span>
+                      <span className="font-medium text-gray-900">₹{calculateEstimatedCost()}</span>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-end space-x-4">
+                    <button
+                      type="button"
+                      onClick={() => setIsNewPurchaseModalOpen(false)}
+                      className="px-4 py-2 text-gray-700 hover:text-gray-900"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {isSubmitting ? "Processing..." : "Confirm Purchase"}
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )
