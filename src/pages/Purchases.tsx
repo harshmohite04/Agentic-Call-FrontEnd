@@ -101,48 +101,7 @@ const Purchases = () => {
     }
   ]
 
-  // Simulate system alerts
-  useEffect(() => {
-    // Simulate load increase alert
-    const loadTimer = setInterval(() => {
-      const randomLoad = Math.floor(Math.random() * 30) + 70 // Random load between 70-100%
-      if (randomLoad > 90) {
-        showAlert(`High Load Alert: System load at ${randomLoad}%`, "warning")
-      }
-    }, 2000) // Check every 3 seconds
 
-    // Simulate energy sharing status
-    const sharingTimer = setInterval(() => {
-      const isSharing = Math.random() > 0.7
-      if (!isSharing) {
-        showAlert("AI Communication Interrupted: Network connectivity issues", "error")
-      }
-    }, 60000) // Check every minute
-
-    // Simulate power meter status
-    const meterTimer = setInterval(() => {
-      const meterStatus = Math.random() > 0.8
-      if (!meterStatus) {
-        showAlert("AI System Alert: Communication lost with AI service", "error")
-      }
-    }, 50000) // Check every 50 seconds
-
-    // Simulate communication status
-    const commTimer = setInterval(() => {
-      const commStatus = Math.random() > 0.85
-      if (!commStatus) {
-        showAlert("Communication Error: Unable to establish connection with AI platform", "warning")
-      }
-    }, 40000) // Check every 40 seconds
-
-    // Cleanup intervals on component unmount
-    return () => {
-      clearInterval(loadTimer)
-      clearInterval(sharingTimer)
-      clearInterval(meterTimer)
-      clearInterval(commTimer)
-    }
-  }, [showAlert])
 
   const handlePurchaseFormChange = (e) => {
     const { name, value, type, checked } = e.target

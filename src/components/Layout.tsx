@@ -1,6 +1,6 @@
 import { ReactNode, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { BoltIcon, HomeIcon, ChartIcon, DocumentIcon, SettingsIcon, LogoutIcon, AlertIcon } from "./Icons";
+import { BoltIcon, HomeIcon, ChartIcon, DocumentIcon, SettingsIcon, LogoutIcon } from "./Icons";
 
 interface LayoutProps {
   children: ReactNode;

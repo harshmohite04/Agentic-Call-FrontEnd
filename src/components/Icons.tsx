@@ -1,4 +1,8 @@
-export const BoltIcon = ({ className = "" }) => (
+export type IconProps = {
+  className?: string
+}
+
+export const BoltIcon = ({ className = "" }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
@@ -59,5 +63,4 @@ export const AlertIcon = () => (
       clipRule="evenodd"
     />
   </svg>
-)
-
+) 
