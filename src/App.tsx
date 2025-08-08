@@ -3,7 +3,6 @@ import Login from "./pages/Login.tsx";
 import LoginOTP from "./pages/LoginOTP.tsx";
 import ProfileSetupOrg from "./pages/ProfileSetupOrg.tsx";
 import ProfileSetupContact from "./pages/ProfileSetupContact.tsx";
-import ProfileSetupKYC from "./pages/ProfileSetupKYC.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
 import EnergyConsumption from "./pages/EnergyConsumption.tsx";
 import Purchases from "./pages/Purchases.tsx";
@@ -29,7 +28,6 @@ function App() {
             <Route path="/login-otp" element={<LoginOTP />} />
             <Route path="/profile-setup-org" element={<ProfileSetupOrg />} />
             <Route path="/profile-setup-contact" element={<ProfileSetupContact />} />
-            <Route path="/profile-setup-kyc" element={<ProfileSetupKYC />} />
 
             {/* Protected routes with Layout */}
             <Route

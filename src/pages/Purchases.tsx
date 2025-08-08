@@ -49,18 +49,18 @@ const Purchases = () => {
   }
 
   const chartData = {
-    labels: ["Peak Hours", "Off-Peak Hours", "Renewable Energy"],
+    labels: ["Premium Credits", "Standard Credits", "Basic Credits"],
     datasets: [{
       data: [45, 35, 20],
       backgroundColor: [
-        "rgba(34, 197, 94, 0.8)",
-        "rgba(99, 102, 241, 0.8)",
-        "rgba(234, 179, 8, 0.8)"
+        "rgba(147, 51, 234, 0.8)",
+        "rgba(59, 130, 246, 0.8)",
+        "rgba(16, 185, 129, 0.8)"
       ],
       borderColor: [
-        "rgb(34, 197, 94)",
-        "rgb(99, 102, 241)",
-        "rgb(234, 179, 8)"
+        "rgb(147, 51, 234)",
+        "rgb(59, 130, 246)",
+        "rgb(16, 185, 129)"
       ],
       borderWidth: 1
     }]
@@ -71,33 +71,33 @@ const Purchases = () => {
       id: "TRX001",
       date: "2024-03-15",
       amount: "₹4,500",
-      type: "Peak Hours",
+      type: "Premium Credits",
       status: "completed",
-      units: "450 kWh"
+      units: "450 Credits"
     },
     {
       id: "TRX002",
       date: "2024-03-14",
       amount: "₹3,200",
-      type: "Off-Peak Hours",
+      type: "Standard Credits",
       status: "completed",
-      units: "400 kWh"
+      units: "400 Credits"
     },
     {
       id: "TRX003",
       date: "2024-03-13",
       amount: "₹2,800",
-      type: "Renewable Energy",
+      type: "Basic Credits",
       status: "pending",
-      units: "350 kWh"
+      units: "350 Credits"
     },
     {
       id: "TRX004",
       date: "2024-03-12",
       amount: "₹3,800",
-      type: "Peak Hours",
+      type: "Premium Credits",
       status: "completed",
-      units: "380 kWh"
+      units: "380 Credits"
     }
   ]
 
@@ -115,7 +115,7 @@ const Purchases = () => {
     const sharingTimer = setInterval(() => {
       const isSharing = Math.random() > 0.7
       if (!isSharing) {
-        showAlert("Energy Sharing Interrupted: Network connectivity issues", "error")
+        showAlert("AI Communication Interrupted: Network connectivity issues", "error")
       }
     }, 60000) // Check every minute
 
@@ -123,7 +123,7 @@ const Purchases = () => {
     const meterTimer = setInterval(() => {
       const meterStatus = Math.random() > 0.8
       if (!meterStatus) {
-        showAlert("Power Meter Alert: Communication lost with smart meter", "error")
+        showAlert("AI System Alert: Communication lost with AI service", "error")
       }
     }, 50000) // Check every 50 seconds
 
@@ -131,7 +131,7 @@ const Purchases = () => {
     const commTimer = setInterval(() => {
       const commStatus = Math.random() > 0.85
       if (!commStatus) {
-        showAlert("Communication Error: Unable to establish connection with grid", "warning")
+        showAlert("Communication Error: Unable to establish connection with AI platform", "warning")
       }
     }, 40000) // Check every 40 seconds
 
@@ -171,10 +171,10 @@ const Purchases = () => {
         id: `TRX${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`,
         date: new Date().toISOString().split('T')[0],
         amount: `₹${(parseFloat(purchaseForm.units) * 10).toFixed(2)}`,
-        type: purchaseForm.type === "peak" ? "Peak Hours" : 
-              purchaseForm.type === "offpeak" ? "Off-Peak Hours" : "Renewable Energy",
+        type: purchaseForm.type === "peak" ? "Premium Credits" : 
+              purchaseForm.type === "offpeak" ? "Standard Credits" : "Basic Credits",
         status: "pending",
-        units: `${purchaseForm.units} kWh`
+        units: `${purchaseForm.units} Credits`
       }
 
       transactions.unshift(newTransaction)
@@ -190,11 +190,11 @@ const Purchases = () => {
         recurringFrequency: "daily"
       })
 
-      showAlert("Purchase created successfully!", "success")
+      showAlert("Credit purchase created successfully!", "success")
 
       // Show recurring purchase confirmation if enabled
       if (purchaseForm.isRecurring) {
-        showAlert(`Recurring purchase scheduled ${purchaseForm.recurringFrequency}`, "info")
+        showAlert(`Recurring credit purchase scheduled ${purchaseForm.recurringFrequency}`, "info")
       }
     } catch (error) {
       console.error("Error creating purchase:", error)
@@ -232,13 +232,13 @@ const Purchases = () => {
   const getStatusColor = (status) => {
     switch (status) {
       case "completed":
-        return "bg-green-100 text-green-700"
+        return "bg-green-500/20 text-green-400 border border-green-400/30"
       case "pending":
-        return "bg-yellow-100 text-yellow-700"
+        return "bg-yellow-500/20 text-yellow-400 border border-yellow-400/30"
       case "failed":
-        return "bg-red-100 text-red-700"
+        return "bg-red-500/20 text-red-400 border border-red-400/30"
       default:
-        return "bg-gray-100 text-gray-700"
+        return "bg-gray-500/20 text-gray-400 border border-gray-400/30"
     }
   }
 
@@ -250,17 +250,29 @@ const Purchases = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-7xl mx-auto space-y-6">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden p-6">
+      {/* Modern animated background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute w-72 h-72 bg-purple-500/20 rounded-full -top-20 -left-20 animate-pulse blur-xl"></div>
+        <div className="absolute w-96 h-96 bg-blue-500/20 rounded-full -bottom-32 -right-32 animate-pulse delay-300 blur-xl"></div>
+        <div className="absolute w-48 h-48 bg-indigo-500/20 rounded-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-pulse delay-500 blur-xl"></div>
+      </div>
+      
+      {/* Grid pattern overlay */}
+      <div className="absolute inset-0 opacity-50" style={{
+        backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+      }}></div>
+
+      <div className="max-w-7xl mx-auto space-y-6 relative z-10">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Purchases</h1>
-            <p className="text-gray-500">Track and manage your energy purchases</p>
+            <h1 className="text-2xl font-bold text-white">AI Communication Credits</h1>
+            <p className="text-gray-300">Purchase credits and manage your AI communication transactions</p>
           </div>
           <button 
             onClick={() => setIsNewPurchaseModalOpen(true)}
-            className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-200"
+            className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-4 py-2 rounded-lg hover:from-purple-700 hover:to-blue-700 focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition-all duration-200 shadow-lg"
           >
             New Purchase
           </button>
@@ -271,14 +283,14 @@ const Purchases = () => {
           {Object.entries(purchaseStats).map(([key, value]) => (
             <div
               key={key}
-              className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow duration-200"
+              className="bg-white/10 backdrop-blur-xl rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-200 border border-white/20"
             >
-              <span className="text-gray-500 text-sm capitalize">
+              <span className="text-gray-300 text-sm capitalize">
                 {key.replace(/([A-Z])/g, " $1").trim()}
               </span>
               <div className="mt-2 flex items-center">
-                <span className="text-2xl font-bold text-gray-900">{value}</span>
-                <BoltIcon className="w-4 h-4 ml-2 text-green-600" />
+                <span className="text-2xl font-bold text-white">{value}</span>
+                <BoltIcon className="w-4 h-4 ml-2 text-purple-400" />
               </div>
             </div>
           ))}
@@ -286,28 +298,28 @@ const Purchases = () => {
 
         {/* Chart and Filters */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 bg-white rounded-xl p-6 shadow-sm">
+          <div className="lg:col-span-2 bg-white/10 backdrop-blur-xl rounded-xl p-6 shadow-lg border border-white/20">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-lg font-semibold text-gray-900">Transaction History</h3>
+              <h3 className="text-lg font-semibold text-white">Transaction History</h3>
               <div className="flex items-center space-x-4">
                 <select
                   value={dateRange}
                   onChange={(e) => setDateRange(e.target.value)}
-                  className="bg-white border border-gray-200 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                  className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 text-white placeholder-gray-300"
                 >
-                  <option value="week">This Week</option>
-                  <option value="month">This Month</option>
-                  <option value="year">This Year</option>
+                  <option value="week" className="text-gray-800">This Week</option>
+                  <option value="month" className="text-gray-800">This Month</option>
+                  <option value="year" className="text-gray-800">This Year</option>
                 </select>
                 <select
                   value={filterStatus}
                   onChange={(e) => setFilterStatus(e.target.value)}
-                  className="bg-white border border-gray-200 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                  className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 text-white placeholder-gray-300"
                 >
-                  <option value="all">All Status</option>
-                  <option value="completed">Completed</option>
-                  <option value="pending">Pending</option>
-                  <option value="failed">Failed</option>
+                  <option value="all" className="text-gray-800">All Status</option>
+                  <option value="completed" className="text-gray-800">Completed</option>
+                  <option value="pending" className="text-gray-800">Pending</option>
+                  <option value="failed" className="text-gray-800">Failed</option>
                 </select>
               </div>
             </div>
@@ -315,26 +327,26 @@ const Purchases = () => {
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="text-left border-b border-gray-100">
-                    <th className="pb-3 text-sm font-medium text-gray-500">Transaction ID</th>
-                    <th className="pb-3 text-sm font-medium text-gray-500">Date</th>
-                    <th className="pb-3 text-sm font-medium text-gray-500">Type</th>
-                    <th className="pb-3 text-sm font-medium text-gray-500">Units</th>
-                    <th className="pb-3 text-sm font-medium text-gray-500">Amount</th>
-                    <th className="pb-3 text-sm font-medium text-gray-500">Status</th>
+                  <tr className="text-left border-b border-white/20">
+                    <th className="pb-3 text-sm font-medium text-gray-300">Transaction ID</th>
+                    <th className="pb-3 text-sm font-medium text-gray-300">Date</th>
+                    <th className="pb-3 text-sm font-medium text-gray-300">Type</th>
+                    <th className="pb-3 text-sm font-medium text-gray-300">Units</th>
+                    <th className="pb-3 text-sm font-medium text-gray-300">Amount</th>
+                    <th className="pb-3 text-sm font-medium text-gray-300">Status</th>
                   </tr>
                 </thead>
                 <tbody>
                   {filteredTransactions.map((tx) => (
                     <tr
                       key={tx.id}
-                      className="border-b border-gray-50 hover:bg-gray-50 transition-colors duration-200"
+                      className="border-b border-white/10 hover:bg-white/5 transition-colors duration-200"
                     >
-                      <td className="py-4 text-sm font-medium text-gray-900">{tx.id}</td>
-                      <td className="py-4 text-sm text-gray-500">{tx.date}</td>
-                      <td className="py-4 text-sm text-gray-500">{tx.type}</td>
-                      <td className="py-4 text-sm text-gray-500">{tx.units}</td>
-                      <td className="py-4 text-sm font-medium text-gray-900">{tx.amount}</td>
+                      <td className="py-4 text-sm font-medium text-white">{tx.id}</td>
+                      <td className="py-4 text-sm text-gray-300">{tx.date}</td>
+                      <td className="py-4 text-sm text-gray-300">{tx.type}</td>
+                      <td className="py-4 text-sm text-gray-300">{tx.units}</td>
+                      <td className="py-4 text-sm font-medium text-white">{tx.amount}</td>
                       <td className="py-4">
                         <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize ${getStatusColor(tx.status)}`}>
                           {tx.status}
@@ -347,8 +359,8 @@ const Purchases = () => {
             </div>
           </div>
 
-          <div className="bg-white rounded-xl p-6 shadow-sm">
-            <h3 className="text-lg font-semibold text-gray-900 mb-6">Purchase Distribution</h3>
+          <div className="bg-white/10 backdrop-blur-xl rounded-xl p-6 shadow-lg border border-white/20">
+            <h3 className="text-lg font-semibold text-white mb-6">Credit Distribution</h3>
             <div className="h-[300px] flex items-center justify-center">
               <Doughnut
                 data={chartData}
@@ -359,7 +371,8 @@ const Purchases = () => {
                     legend: {
                       position: "bottom",
                       labels: {
-                        padding: 20
+                        padding: 20,
+                        color: "#e2e8f0"
                       }
                     }
                   },
@@ -375,7 +388,7 @@ const Purchases = () => {
           {[
             {
               title: "Schedule Purchase",
-              description: "Set up automatic purchases for peak hours",
+              description: "Set up automatic credit purchases",
               action: "Schedule →"
             },
             {
@@ -392,13 +405,13 @@ const Purchases = () => {
             <div
               key={index}
               onClick={() => handleQuickAction(action.action)}
-              className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer group"
+              className="bg-white/10 backdrop-blur-xl rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-200 cursor-pointer group border border-white/20"
             >
-              <h4 className="font-medium text-gray-900 group-hover:text-green-600 transition-colors duration-200">
+              <h4 className="font-medium text-white group-hover:text-purple-400 transition-colors duration-200">
                 {action.title}
               </h4>
-              <p className="text-sm text-gray-500 mt-1">{action.description}</p>
-              <span className="text-sm text-green-600 font-medium mt-4 inline-block group-hover:translate-x-2 transition-transform duration-200">
+              <p className="text-sm text-gray-300 mt-1">{action.description}</p>
+              <span className="text-sm text-purple-400 font-medium mt-4 inline-block group-hover:translate-x-2 transition-transform duration-200">
                 {action.action}
               </span>
             </div>
@@ -407,14 +420,14 @@ const Purchases = () => {
 
         {/* New Purchase Modal */}
         {isNewPurchaseModalOpen && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-            <div className="bg-white rounded-xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+            <div className="bg-white/10 backdrop-blur-xl rounded-xl max-w-lg w-full max-h-[90vh] overflow-y-auto border border-white/20 shadow-2xl">
               <div className="p-6 space-y-6">
                 <div className="flex items-center justify-between">
-                  <h2 className="text-xl font-bold text-gray-900">New Energy Purchase</h2>
+                  <h2 className="text-xl font-bold text-white">New Credit Purchase</h2>
                   <button
                     onClick={() => setIsNewPurchaseModalOpen(false)}
-                    className="text-gray-400 hover:text-gray-500"
+                    className="text-gray-400 hover:text-white transition-colors duration-200"
                   >
                     ✕
                   </button>
@@ -422,38 +435,38 @@ const Purchases = () => {
 
                 <form onSubmit={handlePurchaseSubmit} className="space-y-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Energy Type
+                    <label className="block text-sm font-medium text-gray-300 mb-1">
+                      Credit Type
                     </label>
                     <select
                       name="type"
                       value={purchaseForm.type}
                       onChange={handlePurchaseFormChange}
-                      className="w-full rounded-lg border border-gray-200 px-4 py-2 focus:ring-2 focus:ring-green-500"
+                      className="w-full rounded-lg border border-white/20 px-4 py-2 focus:ring-2 focus:ring-purple-500 bg-white/10 backdrop-blur-sm text-white"
                     >
-                      <option value="peak">Peak Hours</option>
-                      <option value="offpeak">Off-Peak Hours</option>
-                      <option value="renewable">Renewable Energy</option>
+                      <option value="peak" className="text-gray-800">Premium Credits</option>
+                      <option value="offpeak" className="text-gray-800">Standard Credits</option>
+                      <option value="renewable" className="text-gray-800">Basic Credits</option>
                     </select>
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Units (kWh)
+                    <label className="block text-sm font-medium text-gray-300 mb-1">
+                      Credits
                     </label>
                     <input
                       type="number"
                       name="units"
                       value={purchaseForm.units}
                       onChange={handlePurchaseFormChange}
-                      placeholder="Enter units"
-                      className="w-full rounded-lg border border-gray-200 px-4 py-2 focus:ring-2 focus:ring-green-500"
+                      placeholder="Enter credits"
+                      className="w-full rounded-lg border border-white/20 px-4 py-2 focus:ring-2 focus:ring-purple-500 bg-white/10 backdrop-blur-sm text-white placeholder-gray-400"
                     />
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                      <label className="block text-sm font-medium text-gray-300 mb-1">
                         Start Date
                       </label>
                       <input
@@ -461,11 +474,11 @@ const Purchases = () => {
                         name="startDate"
                         value={purchaseForm.startDate}
                         onChange={handlePurchaseFormChange}
-                        className="w-full rounded-lg border border-gray-200 px-4 py-2 focus:ring-2 focus:ring-green-500"
+                        className="w-full rounded-lg border border-white/20 px-4 py-2 focus:ring-2 focus:ring-purple-500 bg-white/10 backdrop-blur-sm text-white"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                      <label className="block text-sm font-medium text-gray-300 mb-1">
                         Start Time
                       </label>
                       <input
@@ -473,40 +486,40 @@ const Purchases = () => {
                         name="startTime"
                         value={purchaseForm.startTime}
                         onChange={handlePurchaseFormChange}
-                        className="w-full rounded-lg border border-gray-200 px-4 py-2 focus:ring-2 focus:ring-green-500"
+                        className="w-full rounded-lg border border-white/20 px-4 py-2 focus:ring-2 focus:ring-purple-500 bg-white/10 backdrop-blur-sm text-white"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-gray-300 mb-1">
                       Duration (hours)
                     </label>
                     <select
                       name="duration"
                       value={purchaseForm.duration}
                       onChange={handlePurchaseFormChange}
-                      className="w-full rounded-lg border border-gray-200 px-4 py-2 focus:ring-2 focus:ring-green-500"
+                      className="w-full rounded-lg border border-white/20 px-4 py-2 focus:ring-2 focus:ring-purple-500 bg-white/10 backdrop-blur-sm text-white"
                     >
                       {[1, 2, 4, 8, 12, 24].map(hours => (
-                        <option key={hours} value={hours}>{hours} hour{hours > 1 ? 's' : ''}</option>
+                        <option key={hours} value={hours} className="text-gray-800">{hours} hour{hours > 1 ? 's' : ''}</option>
                       ))}
                     </select>
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-gray-300 mb-1">
                       Payment Method
                     </label>
                     <select
                       name="paymentMethod"
                       value={purchaseForm.paymentMethod}
                       onChange={handlePurchaseFormChange}
-                      className="w-full rounded-lg border border-gray-200 px-4 py-2 focus:ring-2 focus:ring-green-500"
+                      className="w-full rounded-lg border border-white/20 px-4 py-2 focus:ring-2 focus:ring-purple-500 bg-white/10 backdrop-blur-sm text-white"
                     >
-                      <option value="wallet">Wallet Balance</option>
-                      <option value="card">Credit/Debit Card</option>
-                      <option value="upi">UPI</option>
+                      <option value="wallet" className="text-gray-800">Wallet Balance</option>
+                      <option value="card" className="text-gray-800">Credit/Debit Card</option>
+                      <option value="upi" className="text-gray-800">UPI</option>
                     </select>
                   </div>
 
@@ -516,33 +529,33 @@ const Purchases = () => {
                       name="isRecurring"
                       checked={purchaseForm.isRecurring}
                       onChange={handlePurchaseFormChange}
-                      className="rounded border-gray-300 text-green-600 focus:ring-green-500"
+                      className="rounded border-white/20 text-purple-600 focus:ring-purple-500 bg-white/10"
                     />
-                    <label className="text-sm text-gray-700">Make this a recurring purchase</label>
+                    <label className="text-sm text-gray-300">Make this a recurring purchase</label>
                   </div>
 
                   {purchaseForm.isRecurring && (
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                      <label className="block text-sm font-medium text-gray-300 mb-1">
                         Recurring Frequency
                       </label>
                       <select
                         name="recurringFrequency"
                         value={purchaseForm.recurringFrequency}
                         onChange={handlePurchaseFormChange}
-                        className="w-full rounded-lg border border-gray-200 px-4 py-2 focus:ring-2 focus:ring-green-500"
+                        className="w-full rounded-lg border border-white/20 px-4 py-2 focus:ring-2 focus:ring-purple-500 bg-white/10 backdrop-blur-sm text-white"
                       >
-                        <option value="daily">Daily</option>
-                        <option value="weekly">Weekly</option>
-                        <option value="monthly">Monthly</option>
+                        <option value="daily" className="text-gray-800">Daily</option>
+                        <option value="weekly" className="text-gray-800">Weekly</option>
+                        <option value="monthly" className="text-gray-800">Monthly</option>
                       </select>
                     </div>
                   )}
 
-                  <div className="bg-gray-50 p-4 rounded-lg">
+                  <div className="bg-white/10 backdrop-blur-sm p-4 rounded-lg border border-white/20">
                     <div className="flex justify-between items-center text-sm">
-                      <span className="text-gray-600">Estimated Cost:</span>
-                      <span className="font-medium text-gray-900">₹{calculateEstimatedCost()}</span>
+                      <span className="text-gray-300">Estimated Cost:</span>
+                      <span className="font-medium text-white">₹{calculateEstimatedCost()}</span>
                     </div>
                   </div>
 
@@ -550,14 +563,14 @@ const Purchases = () => {
                     <button
                       type="button"
                       onClick={() => setIsNewPurchaseModalOpen(false)}
-                      className="px-4 py-2 text-gray-700 hover:text-gray-900"
+                      className="px-4 py-2 text-gray-300 hover:text-white transition-colors duration-200"
                     >
                       Cancel
                     </button>
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 py-2 rounded-lg hover:from-purple-700 hover:to-blue-700 focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
                     >
                       {isSubmitting ? "Processing..." : "Confirm Purchase"}
                     </button>

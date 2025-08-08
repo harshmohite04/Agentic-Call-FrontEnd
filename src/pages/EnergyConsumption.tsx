@@ -40,16 +40,16 @@ const EnergyConsumption = () => {
       {
         label: "Current Week",
         data: [120, 150, 180, 90, 160, 140, 130],
-        borderColor: "rgb(34, 197, 94)",
-        backgroundColor: "rgba(34, 197, 94, 0.1)",
+        borderColor: "rgb(147, 51, 234)",
+        backgroundColor: "rgba(147, 51, 234, 0.1)",
         fill: true,
         tension: 0.4
       },
       compareMode && {
         label: "Previous Week",
         data: [100, 130, 150, 110, 140, 130, 120],
-        borderColor: "rgb(99, 102, 241)",
-        backgroundColor: "rgba(99, 102, 241, 0.1)",
+        borderColor: "rgb(59, 130, 246)",
+        backgroundColor: "rgba(59, 130, 246, 0.1)",
         fill: true,
         tension: 0.4
       }
@@ -59,38 +59,50 @@ const EnergyConsumption = () => {
   const efficiencyData = {
     labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
     datasets: [{
-      label: "Energy Efficiency",
+      label: "AI Communication Efficiency",
       data: [85, 88, 92, 87, 90, 89, 91],
-      backgroundColor: "rgba(34, 197, 94, 0.8)"
+      backgroundColor: "rgba(147, 51, 234, 0.8)"
     }]
   }
 
   const metrics = [
-    { value: 2450, label: "Total kWh", change: "+5.2%", trend: "up" },
-    { value: 85, label: "Efficiency %", change: "+2.1%", trend: "up" },
-    { value: 1890, label: "Peak Usage", change: "-3.4%", trend: "down" },
-    { value: 12500, label: "Cost (₹)", change: "+1.8%", trend: "up" }
+    { value: 2450, label: "Total Interactions", change: "+5.2%", trend: "up" },
+    { value: 85, label: "Success Rate %", change: "+2.1%", trend: "up" },
+    { value: 1890, label: "Peak Response Time", change: "-3.4%", trend: "down" },
+    { value: 12500, label: "Credits Used", change: "+1.8%", trend: "up" }
   ]
 
   const timeRanges = ["day", "week", "month", "year"]
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-7xl mx-auto space-y-6">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden p-6">
+      {/* Modern animated background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute w-72 h-72 bg-purple-500/20 rounded-full -top-20 -left-20 animate-pulse blur-xl"></div>
+        <div className="absolute w-96 h-96 bg-blue-500/20 rounded-full -bottom-32 -right-32 animate-pulse delay-300 blur-xl"></div>
+        <div className="absolute w-48 h-48 bg-indigo-500/20 rounded-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-pulse delay-500 blur-xl"></div>
+      </div>
+      
+      {/* Grid pattern overlay */}
+      <div className="absolute inset-0 opacity-50" style={{
+        backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+      }}></div>
+
+      <div className="max-w-7xl mx-auto space-y-6 relative z-10">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Energy Consumption</h1>
-            <p className="text-gray-500">Monitor and analyze your energy usage patterns</p>
+            <h1 className="text-2xl font-bold text-white">AI Communication Analytics</h1>
+            <p className="text-gray-300">Monitor and analyze your AI communication patterns</p>
           </div>
           <div className="flex items-center space-x-4">
             <select
               value={timeRange}
               onChange={(e) => setTimeRange(e.target.value)}
-              className="bg-white border border-gray-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 text-white placeholder-gray-300"
             >
               {timeRanges.map((range) => (
-                <option key={range} value={range}>
+                <option key={range} value={range} className="text-gray-800">
                   Last {range.charAt(0).toUpperCase() + range.slice(1)}
                 </option>
               ))}
@@ -99,8 +111,8 @@ const EnergyConsumption = () => {
               onClick={() => setCompareMode(!compareMode)}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                 compareMode
-                  ? "bg-green-100 text-green-700"
-                  : "bg-white border border-gray-200 text-gray-700 hover:bg-gray-50"
+                  ? "bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg"
+                  : "bg-white/10 backdrop-blur-sm text-gray-300 hover:text-white border border-white/20"
               }`}
             >
               Compare
@@ -113,22 +125,22 @@ const EnergyConsumption = () => {
           {metrics.map((metric, index) => (
             <div
               key={index}
-              className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow duration-200"
+              className="bg-white/10 backdrop-blur-xl rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-200 border border-white/20"
             >
               <div className="flex items-center justify-between">
-                <span className="text-gray-500 text-sm">{metric.label}</span>
+                <span className="text-gray-300 text-sm">{metric.label}</span>
                 <span className={`text-sm font-medium ${
-                  metric.trend === "up" ? "text-green-600" : "text-red-600"
+                  metric.trend === "up" ? "text-green-400" : "text-red-400"
                 }`}>
                   {metric.change}
                 </span>
               </div>
               <div className="mt-2 flex items-baseline">
-                <span className="text-2xl font-bold text-gray-900">{metric.value}</span>
+                <span className="text-2xl font-bold text-white">{metric.value}</span>
                 {metric.trend === "up" ? (
-                  <BoltIcon className="w-4 h-4 ml-2 text-green-600" />
+                  <BoltIcon className="w-4 h-4 ml-2 text-green-400" />
                 ) : (
-                  <BoltIcon className="w-4 h-4 ml-2 text-red-600 transform rotate-180" />
+                  <BoltIcon className="w-4 h-4 ml-2 text-red-400 transform rotate-180" />
                 )}
               </div>
             </div>
@@ -137,26 +149,26 @@ const EnergyConsumption = () => {
 
         {/* Charts */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="bg-white rounded-xl p-6 shadow-sm">
+          <div className="bg-white/10 backdrop-blur-xl rounded-xl p-6 shadow-lg border border-white/20">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">Consumption Trend</h3>
+              <h3 className="text-lg font-semibold text-white">Communication Trend</h3>
               <div className="flex items-center space-x-2">
                 <button
                   onClick={() => setSelectedMetric("consumption")}
-                  className={`px-3 py-1 rounded-lg text-sm ${
+                  className={`px-3 py-1 rounded-lg text-sm transition-all duration-200 ${
                     selectedMetric === "consumption"
-                      ? "bg-green-100 text-green-700"
-                      : "text-gray-600 hover:bg-gray-100"
+                      ? "bg-purple-500/20 text-purple-300 border border-purple-400/30"
+                      : "text-gray-300 hover:text-white hover:bg-white/10"
                   }`}
                 >
                   Usage
                 </button>
                 <button
                   onClick={() => setSelectedMetric("cost")}
-                  className={`px-3 py-1 rounded-lg text-sm ${
+                  className={`px-3 py-1 rounded-lg text-sm transition-all duration-200 ${
                     selectedMetric === "cost"
-                      ? "bg-green-100 text-green-700"
-                      : "text-gray-600 hover:bg-gray-100"
+                      ? "bg-purple-500/20 text-purple-300 border border-purple-400/30"
+                      : "text-gray-300 hover:text-white hover:bg-white/10"
                   }`}
                 >
                   Cost
@@ -172,7 +184,10 @@ const EnergyConsumption = () => {
                   plugins: {
                     legend: {
                       position: "top",
-                      align: "end"
+                      align: "end",
+                      labels: {
+                        color: "#e2e8f0"
+                      }
                     }
                   },
                   scales: {
@@ -180,11 +195,17 @@ const EnergyConsumption = () => {
                       beginAtZero: true,
                       grid: {
                         display: false
+                      },
+                      ticks: {
+                        color: "#e2e8f0"
                       }
                     },
                     x: {
                       grid: {
                         display: false
+                      },
+                      ticks: {
+                        color: "#e2e8f0"
                       }
                     }
                   }
@@ -193,8 +214,8 @@ const EnergyConsumption = () => {
             </div>
           </div>
 
-          <div className="bg-white rounded-xl p-6 shadow-sm">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Efficiency Analysis</h3>
+          <div className="bg-white/10 backdrop-blur-xl rounded-xl p-6 shadow-lg border border-white/20">
+            <h3 className="text-lg font-semibold text-white mb-4">Efficiency Analysis</h3>
             <div className="h-[300px]">
               <Bar
                 data={efficiencyData}
@@ -212,11 +233,17 @@ const EnergyConsumption = () => {
                       max: 100,
                       grid: {
                         display: false
+                      },
+                      ticks: {
+                        color: "#e2e8f0"
                       }
                     },
                     x: {
                       grid: {
                         display: false
+                      },
+                      ticks: {
+                        color: "#e2e8f0"
                       }
                     }
                   }
@@ -227,33 +254,33 @@ const EnergyConsumption = () => {
         </div>
 
         {/* Recommendations */}
-        <div className="bg-white rounded-xl p-6 shadow-sm">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Recommendations</h3>
+        <div className="bg-white/10 backdrop-blur-xl rounded-xl p-6 shadow-lg border border-white/20">
+          <h3 className="text-lg font-semibold text-white mb-4">AI Optimization Tips</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {[
               {
                 title: "Peak Hours Usage",
-                description: "Consider shifting heavy consumption tasks to off-peak hours for better rates",
-                saving: "Potential saving: ₹1,200/month"
+                description: "Consider scheduling AI interactions during off-peak hours for better response times",
+                saving: "Potential improvement: 15% faster responses"
               },
               {
-                title: "Equipment Efficiency",
-                description: "Your HVAC system shows signs of reduced efficiency. Schedule maintenance.",
-                saving: "Potential saving: ₹800/month"
+                title: "Response Optimization",
+                description: "Your AI system shows signs of reduced efficiency. Consider model updates.",
+                saving: "Potential improvement: 20% better accuracy"
               },
               {
-                title: "Solar Integration",
-                description: "Based on your consumption pattern, solar integration could be beneficial",
-                saving: "Potential saving: ₹2,500/month"
+                title: "Advanced Features",
+                description: "Based on your usage pattern, advanced AI features could be beneficial",
+                saving: "Potential improvement: 30% more capabilities"
               }
             ].map((rec, index) => (
               <div
                 key={index}
-                className="p-4 border border-gray-100 rounded-lg hover:border-green-200 transition-colors duration-200"
+                className="p-4 border border-white/20 rounded-lg hover:border-purple-400/30 transition-colors duration-200 bg-white/5 backdrop-blur-sm"
               >
-                <h4 className="font-medium text-gray-900">{rec.title}</h4>
-                <p className="text-sm text-gray-600 mt-1">{rec.description}</p>
-                <p className="text-sm text-green-600 font-medium mt-2">{rec.saving}</p>
+                <h4 className="font-medium text-white">{rec.title}</h4>
+                <p className="text-sm text-gray-300 mt-1">{rec.description}</p>
+                <p className="text-sm text-purple-400 font-medium mt-2">{rec.saving}</p>
               </div>
             ))}
           </div>
