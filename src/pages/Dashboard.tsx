@@ -4,6 +4,7 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { BoltIcon } from "../components/Icons"
 import { Line } from "react-chartjs-2"
+import FileUpload from "../components/FileUpload"
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -30,6 +31,7 @@ ChartJS.register(
 const Dashboard = () => {
   const navigate = useNavigate()
   const [selectedPeriod, setSelectedPeriod] = useState("today")
+  const [showFileUpload, setShowFileUpload] = useState(false)
   const [contextFiles, setContextFiles] = useState([
     {
       name: "Company_Policies.pdf",
@@ -116,6 +118,43 @@ const Dashboard = () => {
       time: "10 mins ago"
     }
   ]
+
+  const handleFileUpload = (file: File) => {
+    const newFile = {
+      name: file.name,
+      size: formatFileSize(file.size),
+      uploaded: "Just now",
+      status: "active",
+      isActive: true
+    };
+    setContextFiles(prev => [newFile, ...prev]);
+  };
+
+  const formatFileSize = (bytes: number): string => {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  };
+
+  const getFileIcon = (fileName: string): string => {
+    const extension = fileName.split('.').pop()?.toLowerCase();
+    switch (extension) {
+      case 'pdf':
+        return '📄';
+      case 'doc':
+      case 'docx':
+        return '📝';
+      case 'xls':
+      case 'xlsx':
+        return '📊';
+      case 'txt':
+        return '📄';
+      default:
+        return '📁';
+    }
+  };
 
   const quickActions = [
     {
@@ -252,7 +291,10 @@ const Dashboard = () => {
           <div className="bg-white/10 backdrop-blur-xl rounded-xl p-6 shadow-lg border border-white/20">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-white">Context</h3>
-              <button className="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1 rounded-lg text-sm transition-colors duration-200">
+              <button 
+                onClick={() => setShowFileUpload(true)}
+                className="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1 rounded-lg text-sm transition-colors duration-200"
+              >
                 ➕ Add
               </button>
             </div>
@@ -263,7 +305,10 @@ const Dashboard = () => {
                   className="p-3 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10"
                 >
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center space-x-3">
+                      <span className="text-xl">
+                        {getFileIcon(file.name)}
+                      </span>
                       <div>
                         <p className="text-sm text-white font-medium">{file.name}</p>
                         <p className="text-xs text-gray-400">{file.size} • {file.uploaded}</p>
@@ -337,6 +382,14 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+
+      {/* File Upload Modal */}
+      {showFileUpload && (
+        <FileUpload
+          onFileUpload={handleFileUpload}
+          onClose={() => setShowFileUpload(false)}
+        />
+      )}
     </div>
   )
 }
